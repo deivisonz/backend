@@ -13,7 +13,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -49,9 +48,6 @@ public class Usuario implements Serializable {
 	@Size(min = 6, message = "A senha deve conter no mínimo 6 caracteres.")
 	private String senha;
 	
-	@Size(max = 60, message = "Telefone: Máximo de 60 caracteres permitido.")
-	private String telefone;
-	
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "usuario_funcao", joinColumns = @JoinColumn(name = "usuario_id"))
 	@Column(name = "funcao_id")
@@ -64,20 +60,15 @@ public class Usuario implements Serializable {
     private Set<Permissao> permissoes = new HashSet<>();
 
 	private boolean ativo = true;
-	
-	@JsonIgnore
-	@OneToMany(mappedBy = "usuario", orphanRemoval = true)
-	private Set<UsuarioSolicitacao> solicitacoes = new HashSet<>();
 
 	public Usuario() {
 	}
 	
-    public Usuario(String nome, String email, String senha, String telefone) {
+    public Usuario(String nome, String email, String senha) {
         super();
         this.nome = nome;
         this.email = email;
         this.senha = senha;
-        this.telefone = telefone;
     }
 
     public int getId() {
@@ -114,14 +105,6 @@ public class Usuario implements Serializable {
         this.senha = senha;
     }
 
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
-
     public Set<Funcao> getFuncoes() {
         return funcoes;
     }
@@ -144,16 +127,6 @@ public class Usuario implements Serializable {
 
     public void setAtivo(boolean ativo) {
         this.ativo = ativo;
-    }
-
-    public Set<UsuarioSolicitacao> getSolicitacoes() {
-        return solicitacoes;
-    }
-
-    public void setSolicitacoes(Set<UsuarioSolicitacao> solicitacoes) {
-        this.solicitacoes.clear();
-        this.solicitacoes.addAll(solicitacoes);
-        this.solicitacoes.forEach(x -> x.setUsuario(this));
     }
     
 }
