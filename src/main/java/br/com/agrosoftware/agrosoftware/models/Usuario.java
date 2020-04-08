@@ -13,7 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -60,10 +60,10 @@ public class Usuario implements Serializable {
     @Column(name = "permissao_id")
     private Set<Permissao> permissoes = new HashSet<>();
 	
-	@ManyToOne
+	@OneToMany
 	@JoinColumn(name = "propriedade_id")
 	@NotNull(message = "Propriedade é obrigatório.")
-	private Propriedade propriedade;
+	private Set<Propriedade> propriedade;
 
 	private boolean ativo = true;
 
@@ -135,16 +135,12 @@ public class Usuario implements Serializable {
         this.ativo = ativo;
     }
     
-    @JsonIgnore
-    public Propriedade getPropriedade() {
+    public Set<Propriedade> getPropriedades() {
         return propriedade;
     }
 
-    @JsonProperty
-    public void setPropriedade(Propriedade propriedade) {
+    public void setPropriedades(Set<Propriedade> propriedade) {
         this.propriedade = propriedade;
     }
-    
-    
     
 }

@@ -32,10 +32,11 @@ public class DBService {
         //Propriedades
         var propriedade1 = new Propriedade("Sítio Monte Belo", 1.5, Cultivo.MILHO, UF.ES); 
         var propriedade2 = new Propriedade("Sítio Boa Fé", 3.2, Cultivo.CAFE, UF.ES);
-        propriedadeRepository.saveAll(List.of(propriedade1, propriedade2));
+        var propriedade3 = new Propriedade("Sítio Boa Viagem", 5.0, Cultivo.CANA, UF.MG);
+        propriedadeRepository.saveAll(List.of(propriedade1, propriedade2, propriedade3));
         
-        usuarioDeivison.setPropriedade(propriedade1);
-        usuarioVinicius.setPropriedade(propriedade2);
+        usuarioDeivison.setPropriedades(Set.of(propriedade1));
+        usuarioVinicius.setPropriedades(Set.of(propriedade2, propriedade3));
         usuarioRepository.saveAll(List.of(usuarioDeivison, usuarioVinicius));      
         
     }

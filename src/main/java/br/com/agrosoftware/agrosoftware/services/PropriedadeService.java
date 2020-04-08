@@ -22,9 +22,10 @@ public class PropriedadeService {
 	}
 
     public void insert(Usuario proprietario) {
-        var propriedade = propriedadeRepo.save(proprietario.getPropriedade());
-        
-        proprietario.setPropriedade(propriedade);
+    	var propriedades = proprietario.getPropriedades();
+    	propriedadeRepo.saveAll(propriedades);
+     
+        proprietario.setPropriedades(propriedades);
         proprietario.getFuncoes().add(Funcao.ADMIN);
         proprietario.getPermissoes().addAll(Set.of(Permissao.values()));
         usuarioService.insert(proprietario);
