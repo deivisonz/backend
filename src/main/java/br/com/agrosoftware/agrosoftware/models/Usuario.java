@@ -145,4 +145,6 @@ public class Usuario implements Serializable {
         this.propriedade = propriedade;
     }
     
+    
+    
 }
