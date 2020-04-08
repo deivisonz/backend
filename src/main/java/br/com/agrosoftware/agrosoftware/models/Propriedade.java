@@ -70,5 +70,39 @@ public class Propriedade implements Serializable {
 	public void setAtivo(boolean ativo) {
 		this.ativo = ativo;
 	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public double getTamanhoHectares() {
+		return tamanhoHectares;
+	}
+
+	public void setTamanhoHectares(double tamanhoHectares) {
+		this.tamanhoHectares = tamanhoHectares;
+	}
+
+	public Cultivo getCultivo() {
+		return cultivo;
+	}
+
+	public void setCultivo(Cultivo cultivo) {
+		this.cultivo = cultivo;
+	}
+
+	public UF getUf() {
+		return uf;
+	}
+
+	public void setUf(UF uf) {
+		this.uf = uf;
+	}
+	
+	
 	
 }
