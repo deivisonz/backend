@@ -25,7 +25,9 @@ public class PropriedadeService {
     	var propriedades = proprietario.getPropriedades();
     	propriedadeRepo.saveAll(propriedades);
      
-        proprietario.setPropriedades(propriedades);
+    	if (propriedades.size() > 0) {
+    		proprietario.setPropriedades(propriedades);
+    	}
         proprietario.getFuncoes().add(Funcao.ADMIN);
         proprietario.getPermissoes().addAll(Set.of(Permissao.values()));
         usuarioService.insert(proprietario);
