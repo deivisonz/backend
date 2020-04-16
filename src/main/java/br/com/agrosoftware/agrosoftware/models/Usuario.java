@@ -62,7 +62,6 @@ public class Usuario implements Serializable {
 	
 	@OneToMany
 	@JoinColumn(name = "propriedade_id")
-	@NotNull(message = "Propriedade é obrigatório.")
 	private Set<Propriedade> propriedade = new HashSet<>();
 
 	private boolean ativo = true;
