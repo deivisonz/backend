@@ -10,9 +10,9 @@ import br.com.agrosoftware.agrosoftware.models.Usuario;
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 
     @Transactional(readOnly = true)
-    Usuario findByEmail(String email);
+    Usuario findByUsuDsEmail(String email);
     
     @Transactional(readOnly = true)
-    Usuario findByEmailAndIdNotIn(String email, int id);
+    Usuario findByUsuDsEmailAndUsuCdUsuarioNotIn(String email, int id);
        
 }

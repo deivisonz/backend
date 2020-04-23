@@ -22,14 +22,12 @@ public class PropriedadeService {
 	}
 
     public void insert(Usuario proprietario) {
-    	var propriedades = proprietario.getPropriedades();
-    	propriedadeRepo.saveAll(propriedades);
-     
-    	if (propriedades.size() > 0) {
-    		proprietario.setPropriedades(propriedades);
-    	}
-        proprietario.getFuncoes().add(Funcao.ADMIN);
-        proprietario.getPermissoes().addAll(Set.of(Permissao.values()));
+    	var propriedade = proprietario.getUsuCdPropriedade();
+    	propriedadeRepo.save(propriedade);
+    	proprietario.setUsuCdPropriedade(propriedade);
+    	
+        proprietario.getUsuLsFuncoes().add(Funcao.ADMIN);
+        proprietario.getUsuLsPermissoes().addAll(Set.of(Permissao.values()));
         usuarioService.insert(proprietario);
     }
     

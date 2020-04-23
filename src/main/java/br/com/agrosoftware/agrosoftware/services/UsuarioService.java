@@ -29,15 +29,15 @@ public class UsuarioService {
     }
     
     public void insert(Usuario usuario) {
-        if (usuarioRepo.findByEmail(usuario.getEmail()) != null)
+        if (usuarioRepo.findByUsuDsEmail(usuario.getUsuDsEmail()) != null)
             throw new DataIntegrityException("E-mail já existente.");
         
-        usuario.setSenha(pe.encode(usuario.getSenha()));        
+        usuario.setUsuDsSenha(pe.encode(usuario.getUsuDsSenha()));        
         usuarioRepo.save(usuario);
     }
     
     public void update(Usuario usuario) {
-        if (usuarioRepo.findByEmailAndIdNotIn(usuario.getEmail(), usuario.getId()) != null)
+        if (usuarioRepo.findByUsuDsEmailAndUsuCdUsuarioNotIn(usuario.getUsuDsEmail(), usuario.getUsuCdUsuario()) != null)
             throw new DataIntegrityException("E-mail já existente.");
         
         usuarioRepo.save(usuario);

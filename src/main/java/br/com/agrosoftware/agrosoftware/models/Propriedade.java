@@ -19,93 +19,93 @@ public class Propriedade implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private int proCdPropriedade;
 	
 	@NotNull(message = "Nome é obrigatório.")
 	@Size(max = 60, message = "Nome: Máximo de 60 caracteres permitido.")
-	private String nome;
+	private String proDsNome;
 	
 	@Size(max = 500, message = "Descrição: Máximo de 500 caracteres permitido.")
-	private String descricao;
+	private String proDsDescricao;
 	
 	@Positive(message = "Tamanho em Hectares não pode ser um valor negativo.")
-	private double tamanhoHectares;
+	private double proVlTamanhoHectares;
 	
 	@NotNull(message = "Cultivo Principal deve ser informado.")
-	private Cultivo cultivo;
+	private Cultivo proFlCultivo;
 	
 	@NotNull(message = "Unidade Federativa é obrigatório.")
-	private UF uf;
+	private UF proFlUf;
 	
-	private boolean ativo = true;
+	private boolean proBlAtivo = true;
 	
 	public Propriedade() {
     }
 	
     public Propriedade(String nome, double tamanhoHectares, Cultivo cultivo, UF uf) {
         super();
-        this.nome = nome;
-        this.tamanhoHectares = tamanhoHectares;
-        this.cultivo = cultivo;
-        this.uf = uf;
+        this.proDsNome = nome;
+        this.proVlTamanhoHectares = tamanhoHectares;
+        this.proFlCultivo = cultivo;
+        this.proFlUf = uf;
     }
 
-	public int getId() {
-		return id;
+	public int getProCdPropriedade() {
+		return proCdPropriedade;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setProCdPropriedade(int proCdPropriedade) {
+		this.proCdPropriedade = proCdPropriedade;
 	}
 
-	public String getNome() {
-		return nome;
+	public String getProDsNome() {
+		return proDsNome;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setProDsNome(String proDsNome) {
+		this.proDsNome = proDsNome;
 	}
 
-	public boolean isAtivo() {
-		return ativo;
+	public String getProDsDescricao() {
+		return proDsDescricao;
 	}
 
-	public void setAtivo(boolean ativo) {
-		this.ativo = ativo;
+	public void setProDsDescricao(String proDsDescricao) {
+		this.proDsDescricao = proDsDescricao;
 	}
 
-	public String getDescricao() {
-		return descricao;
+	public double getProVlTamanhoHectares() {
+		return proVlTamanhoHectares;
 	}
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
+	public void setProVlTamanhoHectares(double proVlTamanhoHectares) {
+		this.proVlTamanhoHectares = proVlTamanhoHectares;
 	}
 
-	public double getTamanhoHectares() {
-		return tamanhoHectares;
+	public Cultivo getProFlCultivo() {
+		return proFlCultivo;
 	}
 
-	public void setTamanhoHectares(double tamanhoHectares) {
-		this.tamanhoHectares = tamanhoHectares;
+	public void setProFlCultivo(Cultivo proFlCultivo) {
+		this.proFlCultivo = proFlCultivo;
 	}
 
-	public Cultivo getCultivo() {
-		return cultivo;
+	public UF getProFlUf() {
+		return proFlUf;
 	}
 
-	public void setCultivo(Cultivo cultivo) {
-		this.cultivo = cultivo;
+	public void setProFlUf(UF proFlUf) {
+		this.proFlUf = proFlUf;
 	}
 
-	public UF getUf() {
-		return uf;
+	public boolean isProBlAtivo() {
+		return proBlAtivo;
 	}
 
-	public void setUf(UF uf) {
-		this.uf = uf;
+	public void setProBlAtivo(boolean proBlAtivo) {
+		this.proBlAtivo = proBlAtivo;
 	}
-	
+    
 	
 	
 }

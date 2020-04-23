@@ -55,7 +55,7 @@ public class UsuarioController {
     @GetMapping("/authenticated")
     public ResponseEntity<Usuario> getAuthenticated() {
         var usuario = usuarioService.getAuthenticated();
-        usuario.setFuncoes(usuario.getFuncoes().stream().sorted(Comparator.comparingInt(Funcao::ordinal).reversed()).collect(Collectors.toSet()));
+        usuario.setUsuLsFuncoes(usuario.getUsuLsFuncoes().stream().sorted(Comparator.comparingInt(Funcao::ordinal).reversed()).collect(Collectors.toSet()));
         return ResponseEntity.ok().body(usuario);
     }
 }

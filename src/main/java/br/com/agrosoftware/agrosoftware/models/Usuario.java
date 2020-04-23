@@ -13,7 +13,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -32,114 +31,115 @@ public class Usuario implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private int usuCdUsuario;
 	
 	@NotNull(message = "Nome é obrigatório.")
 	@Size(max = 60, message = "Nome: Máximo de 60 caracteres permitido.")
-	private String nome;
+	private String usuDsNome;
 	
 	@Column(unique = true)
 	@Email(message = "E-mail inválido.")
 	@NotNull(message = "E-mail é obrigatório.")
 	@Size(max = 60, message = "E-mail: Máximo de 60 caracteres permitido.")
-	private String email;
+	private String usuDsEmail;
 	
 	@JsonIgnore
 	@NotNull(message = "Senha é obrigatório.")
 	@Size(min = 6, message = "A senha deve conter no mínimo 6 caracteres.")
-	private String senha;
+	private String usuDsSenha;
 	
 	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "usuario_funcao", joinColumns = @JoinColumn(name = "usuario_id"))
-	@Column(name = "funcao_id")
+	//@CollectionTable(name = "usuario_funcao", joinColumns = @JoinColumn(name = "usuario_id"))
 	@NotEmpty(message = "É obrigatório no mínimo uma função.")
-	private Set<Funcao> funcoes = Sets.newHashSet(Funcao.USUARIO);
+	private Set<Funcao> usuLsFuncoes = Sets.newHashSet(Funcao.USUARIO);
 	
 	@ElementCollection
-    @CollectionTable(name = "usuario_permissao", joinColumns = @JoinColumn(name = "usuario_id"))
-    @Column(name = "permissao_id")
-    private Set<Permissao> permissoes = new HashSet<>();
+    //@CollectionTable(name = "usuario_permissao", joinColumns = @JoinColumn(name = "usuario_id"))
+    private Set<Permissao> usuLsPermissoes = new HashSet<>();
 	
-	@OneToMany
-	@JoinColumn(name = "propriedade_id")
-	private Set<Propriedade> propriedade = new HashSet<>();
+	@JoinColumn(name = "proCdPropriedade")
+	private Propriedade usuCdPropriedade;
 
-	private boolean ativo = true;
+	private boolean usuBlAtivo = true;
 
 	public Usuario() {
 	}
 	
     public Usuario(String nome, String email, String senha) {
         super();
-        this.nome = nome;
-        this.email = email;
-        this.senha = senha;
-    }
+        this.usuDsNome = nome;
+        this.usuDsEmail = email;
+        this.usuDsSenha = senha;
+    }  
+   
+    public int getUsuCdUsuario() {
+		return usuCdUsuario;
+	}
 
-    public int getId() {
-        return id;
-    }
+	public void setUsuCdUsuario(int usuCdUsuario) {
+		this.usuCdUsuario = usuCdUsuario;
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public String getUsuDsNome() {
+		return usuDsNome;
+	}
 
-    public String getNome() {
-        return nome;
-    }
+	public void setUsuDsNome(String usuDsNome) {
+		this.usuDsNome = usuDsNome;
+	}
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+	public String getUsuDsEmail() {
+		return usuDsEmail;
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	public void setUsuDsEmail(String usuDsEmail) {
+		this.usuDsEmail = usuDsEmail;
+	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	public Set<Funcao> getUsuLsFuncoes() {
+		return usuLsFuncoes;
+	}
 
-    @JsonIgnore
-    public String getSenha() {
-        return senha;
+	public void setUsuLsFuncoes(Set<Funcao> usuLsFuncoes) {
+		this.usuLsFuncoes = usuLsFuncoes;
+	}
+
+	public Set<Permissao> getUsuLsPermissoes() {
+		return usuLsPermissoes;
+	}
+
+	public void setUsuLsPermissoes(Set<Permissao> usuLsPermissoes) {
+		this.usuLsPermissoes = usuLsPermissoes;
+	}
+
+	public Propriedade getUsuCdPropriedade() {
+		return usuCdPropriedade;
+	}
+
+	public void setUsuCdPropriedade(Propriedade usuCdPropriedade) {
+		this.usuCdPropriedade = usuCdPropriedade;
+	}
+
+	public boolean isUsuBlAtivo() {
+		return usuBlAtivo;
+	}
+
+	public void setUsuBlAtivo(boolean usuBlAtivo) {
+		this.usuBlAtivo = usuBlAtivo;
+	}
+
+	public String getUsuDsSenha() {
+		return usuDsSenha;
+	}
+
+	@JsonIgnore
+    public String getuUsuDsSenha() {
+        return usuDsSenha;
     }
 
     @JsonProperty
-    public void setSenha(String senha) {
-        this.senha = senha;
+    public void setUsuDsSenha(String senha) {
+        this.usuDsSenha = senha;
     }
-
-    public Set<Funcao> getFuncoes() {
-        return funcoes;
-    }
-
-    public void setFuncoes(Set<Funcao> funcoes) {
-        this.funcoes = funcoes;
-    }
-
-    public Set<Permissao> getPermissoes() {
-        return permissoes;
-    }
-
-    public void setPermissoes(Set<Permissao> permissoes) {
-        this.permissoes = permissoes;
-    }
-
-    public boolean isAtivo() {
-        return ativo;
-    }
-
-    public void setAtivo(boolean ativo) {
-        this.ativo = ativo;
-    }
-    
-    public Set<Propriedade> getPropriedades() {
-        return propriedade;
-    }
-
-    public void setPropriedades(Set<Propriedade> propriedade) {
-        this.propriedade = propriedade;
-    }
-    
+ 
 }

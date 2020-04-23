@@ -16,11 +16,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        var usuario = usuarioRepo.findByEmail(email);
+        var usuario = usuarioRepo.findByUsuDsEmail(email);
         if (usuario == null)
             throw new UsernameNotFoundException(email);
             
-        return new UsuarioJWT(usuario.getId(), usuario.getEmail(), usuario.getSenha(), usuario.getFuncoes());
+        return new UsuarioJWT(usuario.getUsuCdUsuario(), usuario.getUsuDsEmail(), usuario.getUsuDsSenha(), usuario.getUsuLsFuncoes());
     }
 
 }

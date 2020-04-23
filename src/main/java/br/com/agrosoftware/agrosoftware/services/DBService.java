@@ -26,8 +26,8 @@ public class DBService {
         // Usuários
         var usuarioDeivison = new Usuario("Deivison", "deivison@erlacher.com", pe.encode("112233")); 
         var usuarioVinicius = new Usuario("Vinicius", "vinicius@barth.com", pe.encode("123456")); 
-        usuarioDeivison.getFuncoes().add(Funcao.ADMIN);
-        usuarioVinicius.getPermissoes().addAll(Set.of(Permissao.values())); 
+        usuarioDeivison.getUsuLsFuncoes().add(Funcao.ADMIN);
+        usuarioVinicius.getUsuLsPermissoes().addAll(Set.of(Permissao.values())); 
         
         //Propriedades
         var propriedade1 = new Propriedade("Sítio Monte Belo", 1.5, Cultivo.MILHO, UF.ES); 
@@ -35,8 +35,8 @@ public class DBService {
         var propriedade3 = new Propriedade("Sítio Boa Viagem", 5.0, Cultivo.CANA, UF.MG);
         propriedadeRepository.saveAll(List.of(propriedade1, propriedade2, propriedade3));
         
-        usuarioDeivison.setPropriedades(Set.of(propriedade1));
-        usuarioVinicius.setPropriedades(Set.of(propriedade2, propriedade3));
+        usuarioDeivison.setUsuCdPropriedade(propriedade1);
+        usuarioVinicius.setUsuCdPropriedade(propriedade2);
         usuarioRepository.saveAll(List.of(usuarioDeivison, usuarioVinicius));      
         
     }
