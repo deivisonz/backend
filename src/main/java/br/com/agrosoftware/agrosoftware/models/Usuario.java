@@ -60,9 +60,6 @@ public class Usuario implements Serializable {
     @Column(name = "permissao_id")
     private Set<Permissao> permissoes = new HashSet<>();
 	
-	@OneToMany
-	@JoinColumn(name = "propriedade_id")
-	private Set<Propriedade> propriedade = new HashSet<>();
 
 	private boolean ativo = true;
 
@@ -132,14 +129,6 @@ public class Usuario implements Serializable {
 
     public void setAtivo(boolean ativo) {
         this.ativo = ativo;
-    }
-    
-    public Set<Propriedade> getPropriedades() {
-        return propriedade;
-    }
-
-    public void setPropriedades(Set<Propriedade> propriedade) {
-        this.propriedade = propriedade;
     }
     
 }

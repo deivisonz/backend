@@ -1,7 +1,6 @@
 package br.com.agrosoftware.agrosoftware.controllers;
 
 import java.util.Comparator;
-import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
@@ -32,8 +31,8 @@ public class UsuarioController {
     }
     
     @PostMapping
-    public ResponseEntity<Void> insert(@RequestBody List<Usuario> usuarios) {
-        usuarios.forEach(usuarioService::insert);
+    public ResponseEntity<Void> insert(@RequestBody Usuario usuarios) {
+        usuarioService.insert(usuarios);
         return ResponseEntity.created(null).build();
     }
     
