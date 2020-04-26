@@ -49,12 +49,12 @@ public class Usuario implements Serializable {
 	private String usuDsSenha;
 	
 	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "usuario_funcao", joinColumns = @JoinColumn(name = "usuario_id"))
+	@CollectionTable(name = "usuario_funcao", joinColumns = @JoinColumn(name = "usu_cd_usuario"))
 	@NotEmpty(message = "É obrigatório no mínimo uma função.")
 	private Set<Funcao> usuLsFuncoes = Sets.newHashSet(Funcao.USUARIO);
 	
 	@ElementCollection
-    @CollectionTable(name = "usuario_permissao", joinColumns = @JoinColumn(name = "usuario_id"))
+    @CollectionTable(name = "usuario_permissao", joinColumns = @JoinColumn(name = "usu_cd_usuario"))
     private Set<Permissao> usuLsPermissoes = new HashSet<>();
 
 	private boolean usuBlAtivo = true;
