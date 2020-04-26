@@ -132,14 +132,13 @@ public class Usuario implements Serializable {
 		return usuDsSenha;
 	}
 
-	@JsonIgnore
-    public String getuUsuDsSenha() {
-        return usuDsSenha;
-    }
-
     @JsonProperty
     public void setUsuDsSenha(String senha) {
         this.usuDsSenha = senha;
     }
  
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
+    }
+    
 }

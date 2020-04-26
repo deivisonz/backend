@@ -21,7 +21,7 @@ public class PropriedadeService {
 	    return propriedadeRepo.findById(id).orElseThrow(() -> new ObjectNotFoundException(Propriedade.class.getName() + " não encontrado(a)."));
 	}
 
-    public void insert(Usuario proprietario) {
+   /* public void insert(Usuario proprietario) {
     	var propriedade = proprietario.getUsuCdPropriedade();
     	propriedadeRepo.save(propriedade);
     	proprietario.setUsuCdPropriedade(propriedade);
@@ -30,7 +30,7 @@ public class PropriedadeService {
         proprietario.getUsuLsPermissoes().addAll(Set.of(Permissao.values()));
         usuarioService.insert(proprietario);
     }
-    
+   */ 
     public void update(Propriedade propriedade) {
     	propriedadeRepo.save(propriedade);
     }

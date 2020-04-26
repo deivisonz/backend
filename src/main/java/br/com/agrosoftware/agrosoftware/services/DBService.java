@@ -35,8 +35,8 @@ public class DBService {
         var propriedade3 = new Propriedade("Sítio Boa Viagem", 5.0, Cultivo.CANA, UF.MG);
         propriedadeRepository.saveAll(List.of(propriedade1, propriedade2, propriedade3));
         
-        usuarioDeivison.setUsuCdPropriedade(propriedade1);
-        usuarioVinicius.setUsuCdPropriedade(propriedade2);
+        //usuarioDeivison.setUsuCdPropriedade(propriedade1);
+        //usuarioVinicius.setUsuCdPropriedade(propriedade2);
         usuarioRepository.saveAll(List.of(usuarioDeivison, usuarioVinicius));      
         
     }
