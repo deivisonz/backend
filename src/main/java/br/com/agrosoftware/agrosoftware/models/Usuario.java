@@ -49,16 +49,13 @@ public class Usuario implements Serializable {
 	private String usuDsSenha;
 	
 	@ElementCollection(fetch = FetchType.EAGER)
-	//@CollectionTable(name = "usuario_funcao", joinColumns = @JoinColumn(name = "usuario_id"))
+	@CollectionTable(name = "usuario_funcao", joinColumns = @JoinColumn(name = "usuario_id"))
 	@NotEmpty(message = "É obrigatório no mínimo uma função.")
 	private Set<Funcao> usuLsFuncoes = Sets.newHashSet(Funcao.USUARIO);
 	
 	@ElementCollection
-    //@CollectionTable(name = "usuario_permissao", joinColumns = @JoinColumn(name = "usuario_id"))
+    @CollectionTable(name = "usuario_permissao", joinColumns = @JoinColumn(name = "usuario_id"))
     private Set<Permissao> usuLsPermissoes = new HashSet<>();
-	
-	@JoinColumn(name = "proCdPropriedade")
-	private Propriedade usuCdPropriedade;
 
 	private boolean usuBlAtivo = true;
 
@@ -112,14 +109,6 @@ public class Usuario implements Serializable {
 		this.usuLsPermissoes = usuLsPermissoes;
 	}
 
-	public Propriedade getUsuCdPropriedade() {
-		return usuCdPropriedade;
-	}
-
-	public void setUsuCdPropriedade(Propriedade usuCdPropriedade) {
-		this.usuCdPropriedade = usuCdPropriedade;
-	}
-
 	public boolean isUsuBlAtivo() {
 		return usuBlAtivo;
 	}
@@ -137,8 +126,5 @@ public class Usuario implements Serializable {
         this.usuDsSenha = senha;
     }
  
-    public void setAtivo(boolean ativo) {
-        this.ativo = ativo;
-    }
     
 }
