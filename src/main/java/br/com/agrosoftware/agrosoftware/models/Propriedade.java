@@ -42,9 +42,10 @@ public class Propriedade implements Serializable {
 	public Propriedade() {
     }
 	
-    public Propriedade(String nome, double tamanhoHectares, Cultivo cultivo, UF uf) {
+    public Propriedade(String nome, String descricao, double tamanhoHectares, Cultivo cultivo, UF uf) {
         super();
         this.proDsNome = nome;
+        this.proDsDescricao = descricao;
         this.proVlTamanhoHectares = tamanhoHectares;
         this.proFlCultivo = cultivo;
         this.proFlUf = uf;
