@@ -117,6 +117,7 @@ public class Usuario implements Serializable {
 		this.usuBlAtivo = usuBlAtivo;
 	}
 
+	@JsonIgnore
 	public String getUsuDsSenha() {
 		return usuDsSenha;
 	}
