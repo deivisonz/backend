@@ -3,6 +3,8 @@ package br.com.agrosoftware.agrosoftware.models;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,10 +33,10 @@ public class Propriedade implements Serializable {
 	@Positive(message = "Tamanho em Hectares não pode ser um valor negativo.")
 	private double proVlTamanhoHectares;
 	
-	@NotNull(message = "Cultivo Principal deve ser informado.")
+	@Enumerated(EnumType.STRING)
 	private Cultivo proFlCultivo;
 	
-	@NotNull(message = "Unidade Federativa é obrigatório.")
+	@Enumerated(EnumType.STRING)
 	private UF proFlUf;
 	
 	private boolean proBlAtivo = true;

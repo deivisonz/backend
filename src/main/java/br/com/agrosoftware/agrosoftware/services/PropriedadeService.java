@@ -18,6 +18,10 @@ public class PropriedadeService {
 	public Propriedade find(int id) {
 	    return propriedadeRepo.findById(id).orElseThrow(() -> new ObjectNotFoundException(Propriedade.class.getName() + " não encontrado(a)."));
 	}
+	
+    public void insert(Propriedade propriedade) {       
+        propriedadeRepo.save(propriedade);
+    }
  
     public void update(Propriedade propriedade) {
     	propriedadeRepo.save(propriedade);

@@ -9,12 +9,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.agrosoftware.agrosoftware.models.Propriedade;
+import br.com.agrosoftware.agrosoftware.models.Usuario;
 import br.com.agrosoftware.agrosoftware.repositories.PropriedadeRepository;
 import br.com.agrosoftware.agrosoftware.services.PropriedadeService;
 
@@ -23,6 +25,13 @@ import br.com.agrosoftware.agrosoftware.services.PropriedadeService;
 public class PropriedadeController {
 	@Autowired PropriedadeService propriedadeService;
 	@Autowired PropriedadeRepository propriedadeRepository;
+	
+	
+    @PostMapping
+    public ResponseEntity<Void> insert(@RequestBody Propriedade propriedade) {
+    	propriedadeService.insert(propriedade);
+        return ResponseEntity.created(null).build();
+    }
 	
 	@PutMapping("/{id}")
     public ResponseEntity<Void> update(@PathVariable int id, @RequestBody Propriedade propriedade) {
