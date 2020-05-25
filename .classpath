@@ -29,10 +29,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Projetos/javaml-0.1.7/lib/ajt-2.9.jar"/>
-	<classpathentry kind="lib" path="C:/Projetos/javaml-0.1.7/lib/commons-math-1.2.jar"/>
-	<classpathentry kind="lib" path="C:/Projetos/javaml-0.1.7/lib/Jama-1.0.2.jar"/>
-	<classpathentry kind="lib" path="C:/Projetos/javaml-0.1.7/lib/libsvm.jar"/>
-	<classpathentry kind="lib" path="C:/Projetos/javaml-0.1.7/lib/weka.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Weka-3-8-4/weka.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

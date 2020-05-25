@@ -1,7 +1,6 @@
 package br.com.agrosoftware.agrosoftware.models;
 
 import java.io.Serializable;
-import java.security.Timestamp;
 import java.time.LocalDate;
 
 import javax.persistence.Entity;
@@ -28,7 +27,7 @@ public class DadoClimatico implements Serializable {
 	private LocalDate data;
 	
 	@NotNull(message = "Hora(UTC) deve ser informada.")
-	private Timestamp hora;
+	private int hora;
 	
 	@NotNull(message = "Temperatura máxima(C°) deve ser informada.")
 	private double temperaturaMaxima;
@@ -67,13 +66,13 @@ public class DadoClimatico implements Serializable {
 	private double pressaoMedia;
 	
 	@NotNull(message = "Velocidade(m/s) do vento deve ser informado.")
-	private int velocidadeVento;
+	private double velocidadeVento;
 	
 	@NotNull(message = "Direção(°) do vento deve ser informado.")
-	private int direcaoVento;
+	private double direcaoVento;
 	
 	@NotNull(message = "Velocidade de Rajada(m/s) do vento deve ser informado.")
-	private int velocidadeRajadaVento;
+	private double velocidadeRajadaVento;
 	
 	@PositiveOrZero(message = "Precipitação(mm) não pode ser um valor negativo")
 	private double precipitacao;
@@ -102,11 +101,11 @@ public class DadoClimatico implements Serializable {
 		this.data = data;
 	}
 
-	public Timestamp getHora() {
+	public int getHora() {
 		return hora;
 	}
 
-	public void setHora(Timestamp hora) {
+	public void setHora(int hora) {
 		this.hora = hora;
 	}
 
@@ -206,27 +205,27 @@ public class DadoClimatico implements Serializable {
 		this.pressaoMedia = pressaoMedia;
 	}
 
-	public int getVelocidadeVento() {
+	public double getVelocidadeVento() {
 		return velocidadeVento;
 	}
 
-	public void setVelocidadeVento(int velocidadeVento) {
+	public void setVelocidadeVento(double velocidadeVento) {
 		this.velocidadeVento = velocidadeVento;
 	}
 
-	public int getDirecaoVento() {
+	public double getDirecaoVento() {
 		return direcaoVento;
 	}
 
-	public void setDirecaoVento(int direcaoVento) {
+	public void setDirecaoVento(double direcaoVento) {
 		this.direcaoVento = direcaoVento;
 	}
 
-	public int getVelocidadeRajadaVento() {
+	public double getVelocidadeRajadaVento() {
 		return velocidadeRajadaVento;
 	}
 
-	public void setVelocidadeRajadaVento(int velocidadeRajadaVento) {
+	public void setVelocidadeRajadaVento(double velocidadeRajadaVento) {
 		this.velocidadeRajadaVento = velocidadeRajadaVento;
 	}
 
