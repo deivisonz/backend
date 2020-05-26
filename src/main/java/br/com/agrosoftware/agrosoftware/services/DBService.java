@@ -18,8 +18,10 @@ import br.com.agrosoftware.agrosoftware.enums.Estacao;
 import br.com.agrosoftware.agrosoftware.enums.Funcao;
 import br.com.agrosoftware.agrosoftware.enums.UF;
 import br.com.agrosoftware.agrosoftware.models.DadoClimatico;
+import br.com.agrosoftware.agrosoftware.models.DadoClimaticoMensal;
 import br.com.agrosoftware.agrosoftware.models.Propriedade;
 import br.com.agrosoftware.agrosoftware.models.Usuario;
+import br.com.agrosoftware.agrosoftware.repositories.DadoClimaticoMensalRepository;
 import br.com.agrosoftware.agrosoftware.repositories.DadoClimaticoRepository;
 import br.com.agrosoftware.agrosoftware.repositories.PropriedadeRepository;
 import br.com.agrosoftware.agrosoftware.repositories.UsuarioRepository;
@@ -29,6 +31,7 @@ public class DBService {
     @Autowired private UsuarioRepository usuarioRepository;
     @Autowired private PropriedadeRepository propriedadeRepository;
     @Autowired private DadoClimaticoRepository dadoClimaticoRepository;
+    @Autowired private DadoClimaticoMensalRepository dadoClimaticoMensalRepository;
     @Autowired BCryptPasswordEncoder pe;
     
     private static final int CABECALHO = 0;
@@ -66,49 +69,28 @@ public class DBService {
         var propriedade3 = new Propriedade("Sítio Boa Viagem", "Um sitio de nenhuma merda", 5.0, Cultivo.CANA, UF.MG);
         propriedadeRepository.saveAll(List.of(propriedade1, propriedade2, propriedade3));
         
-        //usuarioDeivison.setUsuCdPropriedade(propriedade1);
-        //usuarioVinicius.setUsuCdPropriedade(propriedade2);
-        usuarioRepository.saveAll(List.of(usuarioDeivison, usuarioVinicius)); 
-        
-        dadoClimaticoRepository.saveAll(lerDadosCsv());   
+        usuarioRepository.saveAll(List.of(usuarioDeivison, usuarioVinicius));         
+        lerDadosCsv();
         
         
     }
     
-	 public List<DadoClimatico> lerDadosCsv() {
+	 public void lerDadosCsv() {
 		String arquivoCSV = "C:\\Projetos\\arquivo.csv";
 		BufferedReader br = null;
 		String linha = "";
 		String csvDivisor = ",";
-		List<DadoClimatico> retorno = new ArrayList<>();
+		List<DadoClimatico> dadoClimatico = new ArrayList<>();
+		List<DadoClimaticoMensal> dadoClimaticoMensal = new ArrayList<>();
 		
 		try {
 			br = new BufferedReader(new FileReader(arquivoCSV));
 			int i = 0;			
 			while ((linha = br.readLine()) != null) {
 				if (i > CABECALHO) {
-					String[] csvDadoClimatico = linha.split(csvDivisor);			
-					DadoClimatico objDadoClimatico = new DadoClimatico();
-					objDadoClimatico.setData(LocalDate.parse(csvDadoClimatico[DATA], DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-					objDadoClimatico.setHora(Integer.parseInt(csvDadoClimatico[HORA]));
-					objDadoClimatico.setTemperaturaMedia(Double.parseDouble(csvDadoClimatico[TEMP_MEDIA]));
-					objDadoClimatico.setTemperaturaMaxima(Double.parseDouble(csvDadoClimatico[TEMP_MAX]));
-					objDadoClimatico.setTemperaturaMinima(Double.parseDouble(csvDadoClimatico[TEMP_MIN]));
-					objDadoClimatico.setUmidadeMedia(Double.parseDouble(csvDadoClimatico[UMIDADE_MEDIA]));
-					objDadoClimatico.setUmidadeMaxima(Double.parseDouble(csvDadoClimatico[UMIDADE_MAX]));
-					objDadoClimatico.setUmidadeMinima(Double.parseDouble(csvDadoClimatico[UMIDADE_MIN]));
-					objDadoClimatico.setPtoOrvalhoMedio(Double.parseDouble(csvDadoClimatico[ORVARLHO_MEDIO]));
-					objDadoClimatico.setPtoOrvalhoMaximo(Double.parseDouble(csvDadoClimatico[ORVARLHO_MAX]));
-					objDadoClimatico.setPtoOrvalhoMinimo(Double.parseDouble(csvDadoClimatico[ORVARLHO_MIN]));
-					objDadoClimatico.setPressaoMedia(Double.parseDouble(csvDadoClimatico[PRESSAO_MEDIA]));
-					objDadoClimatico.setPressaoMaxima(Double.parseDouble(csvDadoClimatico[PRESSAO_MAX]));
-					objDadoClimatico.setPressaoMinima(Double.parseDouble(csvDadoClimatico[PRESSAO_MIN]));
-					objDadoClimatico.setDirecaoVento(Double.parseDouble(csvDadoClimatico[DIRECAO_VENTO]));
-					objDadoClimatico.setVelocidadeVento(Double.parseDouble(csvDadoClimatico[VELOCIDADE_VENTO]));
-					objDadoClimatico.setVelocidadeRajadaVento(Double.parseDouble(csvDadoClimatico[VELOCIDADE_RAJADA_VENTO]));
-					objDadoClimatico.setPrecipitacao(Double.parseDouble(csvDadoClimatico[PRECIPITACAO]));	
-					objDadoClimatico.setEstacao(Estacao.AFONSOCLAUDIO);
-					retorno.add(objDadoClimatico);
+					String[] csvDadoClimatico = linha.split(csvDivisor);	
+					dadoClimatico.add(csvToDadoClimatico(csvDadoClimatico));
+					dadoClimaticoMensal.add(csvToDadoClimaticoMensal(csvDadoClimatico));
 				}
 				i++;
 			}					
@@ -119,7 +101,40 @@ public class DBService {
 	        e.printStackTrace();
 	    }
 		
-		return retorno;
+		dadoClimaticoRepository.saveAll(dadoClimatico);
+		dadoClimaticoMensalRepository.saveAll(dadoClimaticoMensal);
+		
  }
+	 
+	 public DadoClimatico csvToDadoClimatico(String[] csvDadoClimatico) {
+		 	var dadoClimatico = new DadoClimatico();
+			dadoClimatico.setData(LocalDate.parse(csvDadoClimatico[DATA], DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+			dadoClimatico.setHora(Integer.parseInt(csvDadoClimatico[HORA]));
+			dadoClimatico.setTemperaturaMedia(Double.parseDouble(csvDadoClimatico[TEMP_MEDIA]));
+			dadoClimatico.setTemperaturaMaxima(Double.parseDouble(csvDadoClimatico[TEMP_MAX]));
+			dadoClimatico.setTemperaturaMinima(Double.parseDouble(csvDadoClimatico[TEMP_MIN]));
+			dadoClimatico.setUmidadeMedia(Double.parseDouble(csvDadoClimatico[UMIDADE_MEDIA]));
+			dadoClimatico.setUmidadeMaxima(Double.parseDouble(csvDadoClimatico[UMIDADE_MAX]));
+			dadoClimatico.setUmidadeMinima(Double.parseDouble(csvDadoClimatico[UMIDADE_MIN]));
+			dadoClimatico.setPtoOrvalhoMedio(Double.parseDouble(csvDadoClimatico[ORVARLHO_MEDIO]));
+			dadoClimatico.setPtoOrvalhoMaximo(Double.parseDouble(csvDadoClimatico[ORVARLHO_MAX]));
+			dadoClimatico.setPtoOrvalhoMinimo(Double.parseDouble(csvDadoClimatico[ORVARLHO_MIN]));
+			dadoClimatico.setPressaoMedia(Double.parseDouble(csvDadoClimatico[PRESSAO_MEDIA]));
+			dadoClimatico.setPressaoMaxima(Double.parseDouble(csvDadoClimatico[PRESSAO_MAX]));
+			dadoClimatico.setPressaoMinima(Double.parseDouble(csvDadoClimatico[PRESSAO_MIN]));
+			dadoClimatico.setDirecaoVento(Double.parseDouble(csvDadoClimatico[DIRECAO_VENTO]));
+			dadoClimatico.setVelocidadeVento(Double.parseDouble(csvDadoClimatico[VELOCIDADE_VENTO]));
+			dadoClimatico.setVelocidadeRajadaVento(Double.parseDouble(csvDadoClimatico[VELOCIDADE_RAJADA_VENTO]));
+			dadoClimatico.setPrecipitacao(Double.parseDouble(csvDadoClimatico[PRECIPITACAO]));	
+			dadoClimatico.setEstacao(Estacao.VITORIA);
+			
+			return dadoClimatico;
+	 }
+	 
+	 public DadoClimaticoMensal csvToDadoClimaticoMensal(String[] csvDadoClimatico) {
+		 var dadoClimaticoMensal = new DadoClimaticoMensal();
+		 
+		 return dadoClimaticoMensal;
+	 }
     
 }
