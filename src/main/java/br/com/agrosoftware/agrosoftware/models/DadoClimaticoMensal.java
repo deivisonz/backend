@@ -25,9 +25,6 @@ public class DadoClimaticoMensal implements Serializable {
 	@NotNull(message = "Data deve ser informada.")
 	private LocalDate data;
 	
-	@NotNull(message = "Hora(UTC) deve ser informada.")
-	private int hora;
-	
 	private double direcaoVento;
 	
 	private double velocidadeVento;
@@ -84,14 +81,6 @@ public class DadoClimaticoMensal implements Serializable {
 
 	public void setData(LocalDate data) {
 		this.data = data;
-	}
-
-	public int getHora() {
-		return hora;
-	}
-
-	public void setHora(int hora) {
-		this.hora = hora;
 	}
 
 	public double getDirecaoVento() {
