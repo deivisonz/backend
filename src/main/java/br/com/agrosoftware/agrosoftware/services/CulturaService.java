@@ -2,6 +2,7 @@ package br.com.agrosoftware.agrosoftware.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
 
 import br.com.agrosoftware.agrosoftware.exceptions.DataIntegrityException;
 import br.com.agrosoftware.agrosoftware.exceptions.ObjectNotFoundException;
@@ -9,6 +10,7 @@ import br.com.agrosoftware.agrosoftware.models.Cultura;
 import br.com.agrosoftware.agrosoftware.models.Usuario;
 import br.com.agrosoftware.agrosoftware.repositories.CulturaRepository;
 
+@Service
 public class CulturaService {
 
 	@Autowired CulturaRepository culturaRepository;
