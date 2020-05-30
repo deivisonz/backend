@@ -1,15 +1,21 @@
 package br.com.agrosoftware.agrosoftware.models;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 
 import br.com.agrosoftware.agrosoftware.enums.Cultivo;
@@ -39,8 +45,11 @@ public class Propriedade implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private UF proFlUf;
 	
-	@Positive(message = "O número ideal de mm não pode ser negativo.")
+	@PositiveOrZero(message = "O número ideal de mm não pode ser negativo.")
 	private int proMmIdeal;
+	
+	@OneToMany(mappedBy = "culCdPropriedade", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<Cultura> culturas = new HashSet<>();
 	
 	private boolean proBlAtivo = true;
 	
@@ -120,7 +129,14 @@ public class Propriedade implements Serializable {
 	public void setProMmIdeal(int proMmIdeal) {
 		this.proMmIdeal = proMmIdeal;
 	}
-    
-	
+
+	public Set<Cultura> getCulturas() {
+		return culturas;
+	}
+
+	public void setCulturas(Set<Cultura> culturas) {
+		this.culturas = culturas;
+	}
+   	
 	
 }
