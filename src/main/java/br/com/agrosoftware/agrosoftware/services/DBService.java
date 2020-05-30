@@ -3,6 +3,11 @@ package br.com.agrosoftware.agrosoftware.services;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -14,6 +19,7 @@ import br.com.agrosoftware.agrosoftware.enums.Cultivo;
 import br.com.agrosoftware.agrosoftware.enums.Funcao;
 import br.com.agrosoftware.agrosoftware.enums.UF;
 import br.com.agrosoftware.agrosoftware.models.Cultura;
+import br.com.agrosoftware.agrosoftware.models.Predicao;
 import br.com.agrosoftware.agrosoftware.models.Propriedade;
 import br.com.agrosoftware.agrosoftware.models.Usuario;
 import br.com.agrosoftware.agrosoftware.repositories.PropriedadeRepository;
@@ -47,10 +53,10 @@ public class DBService {
         
         usuarioRepository.saveAll(List.of(usuarioDeivison, usuarioVinicius));  
         
-        predicaoClima();
+        //predicaoClima();
     }
     
-    public void predicaoClima() throws Exception {
+    public List<Predicao> predicaoClima() throws Exception {
       Instances dataset = new Instances(new BufferedReader(new FileReader(path + "/clima.arff")));
       
       WekaForecaster forecaster = new WekaForecaster();
@@ -68,26 +74,27 @@ public class DBService {
       forecaster.buildForecaster(dataset, System.out);
       forecaster.primeForecaster(dataset);
       
+      LocalDate data = Instant.ofEpochMilli((long) forecaster.getTSLagMaker().getCurrentTimeStampValue()).atZone(ZoneId.systemDefault()).toLocalDate();
       List<List<NumericPrediction>> forecast = forecaster.forecast(12, System.out);      
       
-     // String[] predicao;
-      
+      List<Predicao> predicao = new ArrayList<Predicao>();
+            
       for (int i = 0; i < 12; i++) {
-          List<NumericPrediction> predsAtStep = forecast.get(i);                  
-          System.out.println("MÊS " + (i+1));
+          List<NumericPrediction> predsAtStep = forecast.get(i);           
+          var dadoPredicao = new Predicao(data.plusMonths(i+1).format(DateTimeFormatter.ofPattern("MM/YYYY")));
           for (int j = 0; j < 2; j++) {   	  
-          	NumericPrediction predForTarget = predsAtStep.get(j);
+        	  NumericPrediction predForTarget = predsAtStep.get(j);
           	if (j == 0) {
-          		System.out.println("Previsão de chuva: " + predForTarget.predicted() + "mm");	
+          		dadoPredicao.setPreVlPrecipitacao(predForTarget.predicted());          
               } else if (j == 1) {
-              	System.out.println("Temp. média Prevista: " + predForTarget.predicted());	
-              }
-          	            
+            	  dadoPredicao.setPreVlTemperaturaMedia(predForTarget.predicted());
+              }         	            
           }
-          System.out.println(forecaster.getTSLagMaker().getCurrentTimeStampValue());
+          predicao.add(dadoPredicao);
+          System.out.println(dadoPredicao.toString());
       }
       
-      
+      return predicao;
       
     }
                
