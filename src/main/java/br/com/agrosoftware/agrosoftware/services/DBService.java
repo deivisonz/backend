@@ -1,6 +1,7 @@
 package br.com.agrosoftware.agrosoftware.services;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.util.List;
 import java.util.Set;
@@ -28,6 +29,8 @@ public class DBService {
     @Autowired private UsuarioRepository usuarioRepository;
     @Autowired private PropriedadeRepository propriedadeRepository;
     @Autowired BCryptPasswordEncoder pe;
+    
+    final String path = new File("src/main/java/br/com/agrosoftware/agrosoftware/").getAbsolutePath();
     	 
     public void instantiateDatabase() throws Exception {   
         var usuarioDeivison = new Usuario("Deivison", "deivison@erlacher.com", pe.encode("112233")); 
@@ -43,34 +46,37 @@ public class DBService {
         propriedadeRepository.saveAll(List.of(propriedade1, propriedade2, propriedade3));
         
         usuarioRepository.saveAll(List.of(usuarioDeivison, usuarioVinicius));  
+        
+        predicaoClima();
     }
     
     public void predicaoClima() throws Exception {
-      Instances dataset = new Instances(new BufferedReader(new FileReader("C:\\Projetos\\clima.arff")));
-
+      Instances dataset = new Instances(new BufferedReader(new FileReader(path + "/clima.arff")));
+      
       WekaForecaster forecaster = new WekaForecaster();
 
-      forecaster.setFieldsToForecast("precipitacao,temperatura"); //Campos a serem previstos   
+      forecaster.setFieldsToForecast("precipitacao_total,temperatura_media"); //Campos a serem previstos   
       forecaster.setBaseForecaster(new GaussianProcesses()); //Define o tipo de algoritmo de predição a ser usado
 
       forecaster.getTSLagMaker().setTimeStampField("data"); // Nome do campo de data no arquivo csv
       forecaster.getTSLagMaker().setMinLag(1);
       forecaster.getTSLagMaker().setMaxLag(12); // Usado para se adequar os calculos dos dados que serão exibidos (12 meses)
-
+      
       forecaster.getTSLagMaker().setAddMonthOfYear(true);
       forecaster.getTSLagMaker().setPeriodicity(TSLagMaker.Periodicity.MONTHLY); //periodicidade em que os dados serão preditos (diario, semanal, mensal...)
-
+      
       forecaster.buildForecaster(dataset, System.out);
       forecaster.primeForecaster(dataset);
-  
-      List<List<NumericPrediction>> forecast = forecaster.forecast(12, System.out);
-
+      
+      List<List<NumericPrediction>> forecast = forecaster.forecast(12, System.out);      
+      
+     // String[] predicao;
+      
       for (int i = 0; i < 12; i++) {
-          List<NumericPrediction> predsAtStep = forecast.get(i);
+          List<NumericPrediction> predsAtStep = forecast.get(i);                  
           System.out.println("MÊS " + (i+1));
-          for (int j = 0; j < 2; j++) {
+          for (int j = 0; j < 2; j++) {   	  
           	NumericPrediction predForTarget = predsAtStep.get(j);
-          	
           	if (j == 0) {
           		System.out.println("Previsão de chuva: " + predForTarget.predicted() + "mm");	
               } else if (j == 1) {
@@ -78,8 +84,11 @@ public class DBService {
               }
           	            
           }
-          System.out.println();
+          System.out.println(forecaster.getTSLagMaker().getCurrentTimeStampValue());
       }
+      
+      
+      
     }
                
 }
