@@ -21,10 +21,20 @@ public class Predicao implements Serializable {
 	
 	private double preVlPrecipitacao;
 	
+	private String preTxObservacao;
+	
 	public Predicao(String mesAno) {
         super();
         this.preDsMesAno = mesAno;
     }
+	
+	public int getPreCdPredicao() {
+		return preCdPredicao;
+	}
+
+	public void setPreCdPredicao(int preCdPredicao) {
+		this.preCdPredicao = preCdPredicao;
+	}
 
 	public String getPreDsMesAno() {
 		return preDsMesAno;
@@ -48,6 +58,14 @@ public class Predicao implements Serializable {
 	
 	public void setPreVlPrecipitacao(double preVlPrecipitacao) {
 		this.preVlPrecipitacao = preVlPrecipitacao;
+	}
+
+	public String getPreTxObservacao() {
+		return preTxObservacao;
+	}
+
+	public void setPreTxObservacao(String preTxObservacao) {
+		this.preTxObservacao = preTxObservacao;
 	}
 
 	@Override
