@@ -86,9 +86,9 @@ public class DBService {
         usuarioVinicius.getUsuLsFuncoes().add(Funcao.USUARIO);
         
         //Propriedades
-        var propriedade1 = new Propriedade("Sítio Monte Belo", "Um sitio de merda", 1.5, Cultivo.MILHO, UF.ES); 
-        var propriedade2 = new Propriedade("Sítio Boa Fé", "Um sitio de pouca merda", 3.2, Cultivo.CAFE, UF.ES);
-        var propriedade3 = new Propriedade("Sítio Boa Viagem", "Um sitio de nenhuma merda", 5.0, Cultivo.CANA, UF.MG);
+        var propriedade1 = new Propriedade("Sítio Monte Belo", "Um sitio de merda", 1.5, Cultivo.MILHO, UF.ES, 122); 
+        var propriedade2 = new Propriedade("Sítio Boa Fé", "Um sitio de pouca merda", 3.2, Cultivo.CAFE, UF.ES, 50);
+        var propriedade3 = new Propriedade("Sítio Boa Viagem", "Um sitio de nenhuma merda", 5.0, Cultivo.CANA, UF.MG, 70);
         propriedadeRepository.saveAll(List.of(propriedade1, propriedade2, propriedade3));
         
         usuarioRepository.saveAll(List.of(usuarioDeivison, usuarioVinicius));         
@@ -96,43 +96,43 @@ public class DBService {
         //Não é necessário por enquanto
         //lerDadosCsv();      
 
-        Instances dataset = new Instances(new BufferedReader(new FileReader("C:\\Projetos\\clima.arff")));
-
-        WekaForecaster forecaster = new WekaForecaster();
-
-        forecaster.setFieldsToForecast("precipitacao,temperatura");
+//        Instances dataset = new Instances(new BufferedReader(new FileReader("C:\\Projetos\\clima.arff")));
+//
+//        WekaForecaster forecaster = new WekaForecaster();
+//
+//        forecaster.setFieldsToForecast("precipitacao,temperatura");
 
         //Define o tipo de algoritmo de predição a ser usado
-        forecaster.setBaseForecaster(new GaussianProcesses());
+//        forecaster.setBaseForecaster(new GaussianProcesses());
+//
+//        forecaster.getTSLagMaker().setTimeStampField("data"); // nome do campo de data no arquivo csv
+//        forecaster.getTSLagMaker().setMinLag(1);
+//        forecaster.getTSLagMaker().setMaxLag(12); // usado para se adequar os calculos dos dados que serão exibidos (12 meses)
+//
+//        forecaster.getTSLagMaker().setAddMonthOfYear(true);
+//        forecaster.getTSLagMaker().setPeriodicity(TSLagMaker.Periodicity.MONTHLY); //periodicidade em que os dados serão preditos (diario, semanal, mensal...)
+//
+//        forecaster.buildForecaster(dataset, System.out);
+//
+//        forecaster.primeForecaster(dataset);
+//    
+//        List<List<NumericPrediction>> forecast = forecaster.forecast(12, System.out);
 
-        forecaster.getTSLagMaker().setTimeStampField("data"); // nome do campo de data no arquivo csv
-        forecaster.getTSLagMaker().setMinLag(1);
-        forecaster.getTSLagMaker().setMaxLag(12); // usado para se adequar os calculos dos dados que serão exibidos (12 meses)
-
-        forecaster.getTSLagMaker().setAddMonthOfYear(true);
-        forecaster.getTSLagMaker().setPeriodicity(TSLagMaker.Periodicity.MONTHLY); //periodicidade em que os dados serão preditos (diario, semanal, mensal...)
-
-        forecaster.buildForecaster(dataset, System.out);
-
-        forecaster.primeForecaster(dataset);
-    
-        List<List<NumericPrediction>> forecast = forecaster.forecast(12, System.out);
-
-        for (int i = 0; i < 12; i++) {
-            List<NumericPrediction> predsAtStep = forecast.get(i);
-            System.out.println("MÊS " + (i+1));
-            for (int j = 0; j < 2; j++) {
-            	NumericPrediction predForTarget = predsAtStep.get(j);
-            	
-            	if (j == 0) {
-            		System.out.println("Previsão de chuva: " + predForTarget.predicted() + "mm");	
-                } else if (j == 1) {
-                	System.out.println("Temp. média Prevista: " + predForTarget.predicted());	
-                }
-            	            
-            }
-            System.out.println();
-        }
+//        for (int i = 0; i < 12; i++) {
+//            List<NumericPrediction> predsAtStep = forecast.get(i);
+//            System.out.println("MÊS " + (i+1));
+//            for (int j = 0; j < 2; j++) {
+//            	NumericPrediction predForTarget = predsAtStep.get(j);
+//            	
+//            	if (j == 0) {
+//            		System.out.println("Previsão de chuva: " + predForTarget.predicted() + "mm");	
+//                } else if (j == 1) {
+//                	System.out.println("Temp. média Prevista: " + predForTarget.predicted());	
+//                }
+//            	            
+//            }
+//            System.out.println();
+//        }
 
     }
         
