@@ -1,7 +1,6 @@
 package br.com.agrosoftware.agrosoftware.models;
 
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CollectionTable;
@@ -23,7 +22,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.Sets;
 
 import br.com.agrosoftware.agrosoftware.enums.Funcao;
-import br.com.agrosoftware.agrosoftware.enums.Permissao;
 
 @Entity
 public class Usuario implements Serializable {
@@ -53,9 +51,6 @@ public class Usuario implements Serializable {
 	@NotEmpty(message = "É obrigatório no mínimo uma função.")
 	private Set<Funcao> usuLsFuncoes = Sets.newHashSet(Funcao.USUARIO);
 	
-	@ElementCollection
-    @CollectionTable(name = "usuario_permissao", joinColumns = @JoinColumn(name = "usu_cd_usuario"))
-    private Set<Permissao> usuLsPermissoes = new HashSet<>();
 
 	private boolean usuBlAtivo = true;
 
@@ -99,14 +94,6 @@ public class Usuario implements Serializable {
 
 	public void setUsuLsFuncoes(Set<Funcao> usuLsFuncoes) {
 		this.usuLsFuncoes = usuLsFuncoes;
-	}
-
-	public Set<Permissao> getUsuLsPermissoes() {
-		return usuLsPermissoes;
-	}
-
-	public void setUsuLsPermissoes(Set<Permissao> usuLsPermissoes) {
-		this.usuLsPermissoes = usuLsPermissoes;
 	}
 
 	public boolean isUsuBlAtivo() {
