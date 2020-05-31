@@ -117,7 +117,7 @@ public class DBService {
      	  		
         	  	break;
     	  		}
-        	 
+        	 dadoPredicao.setPreTxObservacao(observacao.toString());
           }
           
           predicao.add(dadoPredicao);
