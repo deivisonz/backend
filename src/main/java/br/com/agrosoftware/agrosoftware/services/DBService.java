@@ -60,7 +60,7 @@ public class DBService {
         
         usuarioRepository.saveAll(List.of(usuarioDeivison, usuarioVinicius));  
         
-        //predicaoClima();
+        //predicaoClima(0);
     }
     
     public List<Predicao> predicaoClima(int idCultivo) throws Exception {
@@ -68,7 +68,7 @@ public class DBService {
       
       WekaForecaster forecaster = new WekaForecaster();
 
-      forecaster.setFieldsToForecast("precipitacao_total,temperatura_media"); //Campos a serem previstos   
+      forecaster.setFieldsToForecast("precipitacao_total,temperatura_media,dias_chuvosos"); //Campos a serem previstos   
       forecaster.setBaseForecaster(new GaussianProcesses()); //Define o tipo de algoritmo de predição a ser usado
 
       forecaster.getTSLagMaker().setTimeStampField("data"); // Nome do campo de data no arquivo csv
@@ -91,7 +91,7 @@ public class DBService {
           var dadoPredicao = new Predicao(data.plusMonths(mes+1).format(DateTimeFormatter.ofPattern("MM/YYYY")));
           for (int info = 0; info < 2; info ++) {   	  
         	  NumericPrediction predForTarget = predsAtStep.get(info);      	  
-        	  var cultura = culturaRepository.getOne(idCultivo);        	  
+        	  Cultura cultura = culturaRepository.getOne(idCultivo);        	  
         	  StringBuilder observacao = new StringBuilder(200);
         	  switch(info){
         	  	case PRECIPITACAO:
@@ -109,9 +109,9 @@ public class DBService {
         	  		var tempMedia = BigDecimal.valueOf(predForTarget.predicted()).setScale(3, RoundingMode.FLOOR).doubleValue();
         	  		dadoPredicao.setPreVlTemperaturaMedia(tempMedia);
         	  		
-        	  		if (cultura != null && Math.abs(tempMedia - cultura.getCulVlMmIdeal()) < 2) {
+        	  		if (cultura != null && Math.abs(tempMedia - cultura.getCulVlTempMinIdeal()) < 1) {
 	        			observacao.append("Alerta de temperatura abaixo do ideal!");
-	        		} else if (cultura != null && Math.abs(tempMedia - cultura.getCulVlMmIdeal()) > 2){
+	        		} else if (cultura != null && Math.abs(tempMedia - cultura.getCulVlTempMaxIdeal()) > 1){
 	        			observacao.append("Alerta de temperatura acima do ideal!");
 	        		} 
      	  		

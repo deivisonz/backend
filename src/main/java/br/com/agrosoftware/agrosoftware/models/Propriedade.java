@@ -39,9 +39,6 @@ public class Propriedade implements Serializable {
 	private double proVlTamanhoHectares;
 	
 	@Enumerated(EnumType.STRING)
-	private Cultivo proFlCultivo;
-	
-	@Enumerated(EnumType.STRING)
 	private UF proFlUf;
 	
 	@PositiveOrZero(message = "O número ideal de mm não pode ser negativo.")
@@ -60,7 +57,6 @@ public class Propriedade implements Serializable {
         this.proDsNome = nome;
         this.proDsDescricao = descricao;
         this.proVlTamanhoHectares = tamanhoHectares;
-        this.proFlCultivo = cultivo;
         this.proFlUf = uf;
         this.proMmIdeal = proMmIdeal;
     }
@@ -95,14 +91,6 @@ public class Propriedade implements Serializable {
 
 	public void setProVlTamanhoHectares(double proVlTamanhoHectares) {
 		this.proVlTamanhoHectares = proVlTamanhoHectares;
-	}
-
-	public Cultivo getProFlCultivo() {
-		return proFlCultivo;
-	}
-
-	public void setProFlCultivo(Cultivo proFlCultivo) {
-		this.proFlCultivo = proFlCultivo;
 	}
 
 	public UF getProFlUf() {

@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -51,6 +52,9 @@ public class Usuario implements Serializable {
 	@NotEmpty(message = "É obrigatório no mínimo uma função.")
 	private Set<Funcao> usuLsFuncoes = Sets.newHashSet(Funcao.USUARIO);
 	
+	@ManyToOne
+    @JoinColumn(name = "usu_cd_propriedade")
+    private Propriedade usuCdPropriedade;
 
 	private boolean usuBlAtivo = true;
 
@@ -113,6 +117,14 @@ public class Usuario implements Serializable {
     public void setUsuDsSenha(String senha) {
         this.usuDsSenha = senha;
     }
- 
+
+	public Propriedade getUsuCdPropriedade() {
+		return usuCdPropriedade;
+	}
+
+	public void setUsuCdPropriedade(Propriedade usuCdPropriedade) {
+		this.usuCdPropriedade = usuCdPropriedade;
+	}
+   
     
 }

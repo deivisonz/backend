@@ -34,8 +34,8 @@ public class Cultura implements Serializable{
 	private Double culVlTempMaxIdeal;	
 	
 	@ManyToOne
-    @JoinColumn(name = "propriedade_pro_cd_propriedade")
-    @NotNull(message = "Propriedade é obrigatório.")
+    @JoinColumn(name = "cul_cd_propriedade")
+    //@NotNull(message = "Propriedade é obrigatório.")
     private Propriedade culCdPropriedade;
 
 	public Cultura() {
