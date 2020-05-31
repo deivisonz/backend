@@ -51,12 +51,12 @@ public class Cultura implements Serializable{
         this.culCdPropriedade = culCdPropriedade;
     }
  
-	public int getCul_cd_cultivo() {
+	public int getCulCdCultivo() {
 		return culCdCultivo;
 	}
 
-	public void setCul_cd_cultivo(int cul_cd_cultivo) {
-		this.culCdCultivo = cul_cd_cultivo;
+	public void setCulCdCultivo(int culCdCultivo) {
+		this.culCdCultivo = culCdCultivo;
 	}
 
 	public String getCulDsNome() {
