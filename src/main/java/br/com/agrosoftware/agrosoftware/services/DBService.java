@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -94,7 +95,7 @@ public class DBService {
         	  StringBuilder observacao = new StringBuilder(200);
         	  switch(info){
         	  	case PRECIPITACAO:
-	        		var precipitacao = BigDecimal.valueOf(predForTarget.predicted()).setScale(3).doubleValue();
+	        		var precipitacao = BigDecimal.valueOf(predForTarget.predicted()).setScale(3, RoundingMode.FLOOR).doubleValue();
 	        		dadoPredicao.setPreVlPrecipitacao(precipitacao);
 	        		
 	        		if (cultura != null && Math.abs(precipitacao - cultura.getCulVlMmIdeal()) < 20) {
@@ -105,7 +106,7 @@ public class DBService {
 	        		
 	        	break;
         	  	case TEMPERATURA_MEDIA:
-        	  		var tempMedia = BigDecimal.valueOf(predForTarget.predicted()).setScale(3).doubleValue();
+        	  		var tempMedia = BigDecimal.valueOf(predForTarget.predicted()).setScale(3, RoundingMode.FLOOR).doubleValue();
         	  		dadoPredicao.setPreVlTemperaturaMedia(tempMedia);
         	  		
         	  		if (cultura != null && Math.abs(tempMedia - cultura.getCulVlMmIdeal()) < 2) {
