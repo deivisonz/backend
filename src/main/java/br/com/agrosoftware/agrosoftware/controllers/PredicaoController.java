@@ -19,7 +19,7 @@ public class PredicaoController {
 	
 	@Autowired private DBService dBService;
 
-	@GetMapping("/anual")
+	@GetMapping("/anual/{idCultivo}")
     public ResponseEntity<List<Predicao>> findAll(@PathVariable int idCultivo) throws Exception {
 		List<Predicao> predicao = dBService.predicaoClima(idCultivo);
 		
