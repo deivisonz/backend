@@ -28,7 +28,7 @@ import br.com.agrosoftware.agrosoftware.repositories.CulturaRepository;
 import br.com.agrosoftware.agrosoftware.repositories.PropriedadeRepository;
 import br.com.agrosoftware.agrosoftware.repositories.UsuarioRepository;
 import weka.classifiers.evaluation.NumericPrediction;
-import weka.classifiers.functions.GaussianProcesses;
+import weka.classifiers.functions.LinearRegression;
 import weka.classifiers.timeseries.WekaForecaster;
 import weka.core.Instances;
 import weka.filters.supervised.attribute.TSLagMaker;
@@ -69,7 +69,7 @@ public class DBService {
       WekaForecaster forecaster = new WekaForecaster();
 
       forecaster.setFieldsToForecast("precipitacao_total,temperatura_media,dias_chuvosos"); //Campos a serem previstos   
-      forecaster.setBaseForecaster(new GaussianProcesses()); //Define o tipo de algoritmo de predição a ser usado
+      forecaster.setBaseForecaster(new LinearRegression()); //Define o tipo de algoritmo de predição a ser usado
 
       forecaster.getTSLagMaker().setTimeStampField("data"); // Nome do campo de data no arquivo csv
       forecaster.getTSLagMaker().setMinLag(1);
@@ -85,26 +85,24 @@ public class DBService {
       List<List<NumericPrediction>> forecast = forecaster.forecast(12, System.out);      
       
       List<Predicao> predicao = new ArrayList<Predicao>();
-            
+      Cultura cultura = culturaRepository.findById(idCultivo).orElse(null);            
+      
       for (int mes = 0; mes < 12; mes++) {
           List<NumericPrediction> predsAtStep = forecast.get(mes);           
           var dadoPredicao = new Predicao(data.plusMonths(mes+1).format(DateTimeFormatter.ofPattern("MM/YYYY")));
           for (int info = 0; info < 2; info ++) {   	  
-        	  NumericPrediction predForTarget = predsAtStep.get(info);      	  
-        	  Cultura cultura = culturaRepository.getOne(idCultivo);        	  
-        	  StringBuilder observacao = new StringBuilder(200);
-        	  StringBuilder observacaoPrecipitacao = new StringBuilder(200);
+        	  NumericPrediction predForTarget = predsAtStep.get(info);   
         	  int corTempMedia = 0;
-        	  switch(info){
+        	  switch(info) {
         	  	case PRECIPITACAO:
 	        		var precipitacao = BigDecimal.valueOf(predForTarget.predicted()).setScale(3, RoundingMode.FLOOR).doubleValue();
 	        		dadoPredicao.setPreVlPrecipitacao(precipitacao);
 	        		
-	        		if (cultura != null && Math.abs(precipitacao - cultura.getCulVlMmIdeal()) < 20) {
-	        			observacaoPrecipitacao.append("Alerta de baixo nível de precipitação!");
-	        		} else if (cultura != null && Math.abs(precipitacao - cultura.getCulVlMmIdeal()) > 20){
-	        			observacaoPrecipitacao.append("Alerta de precipitação excessiva!");
-	        		} 
+	        		if (cultura != null && (precipitacao - 50) > cultura.getCulVlMmIdeal()) {
+	        			dadoPredicao.setPreTxObservacaoPrecipitacao("Alerta de precipitação excessiva!");
+	        		} else if (cultura != null && (precipitacao + 50) < cultura.getCulVlMmIdeal() ){       			
+	        			dadoPredicao.setPreTxObservacaoPrecipitacao("Alerta de baixo nível de precipitação!");
+	        		}
 	        		
 	        	break;
         	  	case TEMPERATURA_MEDIA:
@@ -112,21 +110,19 @@ public class DBService {
         	  		dadoPredicao.setPreVlTemperaturaMedia(tempMedia);
         	  		
         	  		if (cultura != null && tempMedia <= cultura.getCulVlTempMinIdeal()) {
-	        			observacao.append("Alerta de temperatura abaixo do ideal!");
+        	  			dadoPredicao.setPreTxObservacaoTempMedia("Alerta de temperatura abaixo do ideal!");
 	        		} else if (cultura != null && tempMedia >= cultura.getCulVlTempMaxIdeal()){
-	        			observacao.append("Alerta de temperatura acima do ideal!");
+	        			dadoPredicao.setPreTxObservacaoTempMedia("Alerta de temperatura acima do ideal!");
 	        		}else {
-	        			observacao.append("O período está ideal para a plantação");
+	        			dadoPredicao.setPreTxObservacaoTempMedia("O período está ideal para a plantação");
 	        			corTempMedia = 1;
 	        		}
      	  		
         	  	break;
     	  		}
-        	 dadoPredicao.setPreTxObservacaoTempMedia(observacao.toString());
-        	 dadoPredicao.setPreTxObservacaoPrecipitacao(observacaoPrecipitacao.toString());
-        	 dadoPredicao.setPrevlCorCard(corTempMedia);
+         	  dadoPredicao.setPrevlCorCard(corTempMedia);
           }
-          
+               
           predicao.add(dadoPredicao);
           System.out.println(dadoPredicao.toString());
       }
