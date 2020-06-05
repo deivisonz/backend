@@ -23,7 +23,11 @@ public class Predicao implements Serializable {
 	
 	private double preVlPrecipitacao;
 	
-	private String preTxObservacao;
+	private String preTxObservacaoTempMedia;
+	
+	private String preTxObservacaoPrecipitacao;
+	
+	private int prevlCorCard;
 	
 	@ManyToOne
     @JoinColumn(name = "pre_cd_propriedade")
@@ -66,12 +70,29 @@ public class Predicao implements Serializable {
 		this.preVlPrecipitacao = preVlPrecipitacao;
 	}
 
-	public String getPreTxObservacao() {
-		return preTxObservacao;
+	public String getPreTxObservacaoTempMedia() {
+		return preTxObservacaoTempMedia;
 	}
 
-	public void setPreTxObservacao(String preTxObservacao) {
-		this.preTxObservacao = preTxObservacao;
+	public void setPreTxObservacaoTempMedia(String preTxObservacao) {
+		this.preTxObservacaoTempMedia = preTxObservacao;
+	}
+	
+
+	public int getPrevlCorCard() {
+		return prevlCorCard;
+	}
+
+	public void setPrevlCorCard(int prevlCorCard) {
+		this.prevlCorCard = prevlCorCard;
+	}
+
+	public String getPreTxObservacaoPrecipitacao() {
+		return preTxObservacaoPrecipitacao;
+	}
+
+	public void setPreTxObservacaoPrecipitacao(String preTxObservacaoPrecipitacao) {
+		this.preTxObservacaoPrecipitacao = preTxObservacaoPrecipitacao;
 	}
 
 	@Override

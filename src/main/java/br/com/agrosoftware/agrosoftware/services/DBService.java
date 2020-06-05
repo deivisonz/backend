@@ -93,15 +93,17 @@ public class DBService {
         	  NumericPrediction predForTarget = predsAtStep.get(info);      	  
         	  Cultura cultura = culturaRepository.getOne(idCultivo);        	  
         	  StringBuilder observacao = new StringBuilder(200);
+        	  StringBuilder observacaoPrecipitacao = new StringBuilder(200);
+        	  int corTempMedia = 0;
         	  switch(info){
         	  	case PRECIPITACAO:
 	        		var precipitacao = BigDecimal.valueOf(predForTarget.predicted()).setScale(3, RoundingMode.FLOOR).doubleValue();
 	        		dadoPredicao.setPreVlPrecipitacao(precipitacao);
 	        		
 	        		if (cultura != null && Math.abs(precipitacao - cultura.getCulVlMmIdeal()) < 20) {
-	        			observacao.append("Alerta de baixo nível de precipitação!");
+	        			observacaoPrecipitacao.append("Alerta de baixo nível de precipitação!");
 	        		} else if (cultura != null && Math.abs(precipitacao - cultura.getCulVlMmIdeal()) > 20){
-	        			observacao.append("Alerta de precipitação excessiva!");
+	        			observacaoPrecipitacao.append("Alerta de precipitação excessiva!");
 	        		} 
 	        		
 	        	break;
@@ -109,15 +111,20 @@ public class DBService {
         	  		var tempMedia = BigDecimal.valueOf(predForTarget.predicted()).setScale(3, RoundingMode.FLOOR).doubleValue();
         	  		dadoPredicao.setPreVlTemperaturaMedia(tempMedia);
         	  		
-        	  		if (cultura != null && Math.abs(tempMedia - cultura.getCulVlTempMinIdeal()) < 1) {
+        	  		if (cultura != null && tempMedia <= cultura.getCulVlTempMinIdeal()) {
 	        			observacao.append("Alerta de temperatura abaixo do ideal!");
-	        		} else if (cultura != null && Math.abs(tempMedia - cultura.getCulVlTempMaxIdeal()) > 1){
+	        		} else if (cultura != null && tempMedia >= cultura.getCulVlTempMaxIdeal()){
 	        			observacao.append("Alerta de temperatura acima do ideal!");
-	        		} 
+	        		}else {
+	        			observacao.append("O período está ideal para a plantação");
+	        			corTempMedia = 1;
+	        		}
      	  		
         	  	break;
     	  		}
-        	 dadoPredicao.setPreTxObservacao(observacao.toString());
+        	 dadoPredicao.setPreTxObservacaoTempMedia(observacao.toString());
+        	 dadoPredicao.setPreTxObservacaoPrecipitacao(observacaoPrecipitacao.toString());
+        	 dadoPredicao.setPrevlCorCard(corTempMedia);
           }
           
           predicao.add(dadoPredicao);
