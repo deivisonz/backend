@@ -91,16 +91,17 @@ public class DBService {
           List<NumericPrediction> predsAtStep = forecast.get(mes);           
           var dadoPredicao = new Predicao(data.plusMonths(mes+1).format(DateTimeFormatter.ofPattern("MM/YYYY")));
           for (int info = 0; info < 2; info ++) {   	  
-        	  NumericPrediction predForTarget = predsAtStep.get(info);   
-        	  int corTempMedia = 0;
+        	  NumericPrediction predForTarget = predsAtStep.get(info);
         	  switch(info) {
         	  	case PRECIPITACAO:
 	        		var precipitacao = BigDecimal.valueOf(predForTarget.predicted()).setScale(3, RoundingMode.FLOOR).doubleValue();
 	        		dadoPredicao.setPreVlPrecipitacao(precipitacao);
 	        		
-	        		if (cultura != null && (precipitacao - 50) > cultura.getCulVlMmIdeal()) {
-	        			dadoPredicao.setPreTxObservacaoPrecipitacao("Alerta de precipitação excessiva!");
-	        		} else if (cultura != null && (precipitacao + 50) < cultura.getCulVlMmIdeal() ){       			
+	        		if (cultura != null && (cultura.getCulVlMmIdeal() - 20 <= precipitacao && cultura.getCulVlMmIdeal() + 20 >= precipitacao)) {
+	        			dadoPredicao.setPreTxObservacaoPrecipitacao("A precipitação está ideal para seu cultivo!");
+	        		} else if(cultura != null && (cultura.getCulVlMmIdeal()) < precipitacao) {
+	        			dadoPredicao.setPreTxObservacaoPrecipitacao("Alerta de precipitação excessiva!");	        			
+	        		}else if (cultura != null && (cultura.getCulVlMmIdeal()) > precipitacao ){       			
 	        			dadoPredicao.setPreTxObservacaoPrecipitacao("Alerta de baixo nível de precipitação!");
 	        		}
 	        		
@@ -111,16 +112,17 @@ public class DBService {
         	  		
         	  		if (cultura != null && tempMedia <= cultura.getCulVlTempMinIdeal()) {
         	  			dadoPredicao.setPreTxObservacaoTempMedia("Alerta de temperatura abaixo do ideal!");
+        	  			dadoPredicao.setPrevlCorCard(0);
 	        		} else if (cultura != null && tempMedia >= cultura.getCulVlTempMaxIdeal()){
 	        			dadoPredicao.setPreTxObservacaoTempMedia("Alerta de temperatura acima do ideal!");
+	        			dadoPredicao.setPrevlCorCard(1);
 	        		}else {
 	        			dadoPredicao.setPreTxObservacaoTempMedia("O período está ideal para a plantação");
-	        			corTempMedia = 1;
+	        			dadoPredicao.setPrevlCorCard(2);
 	        		}
      	  		
         	  	break;
     	  		}
-         	  dadoPredicao.setPrevlCorCard(corTempMedia);
           }
                
           predicao.add(dadoPredicao);
