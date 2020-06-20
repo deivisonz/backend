@@ -99,10 +99,13 @@ public class DBService {
 	        		
 	        		if (cultura != null && (cultura.getCulVlMmIdeal() - 20 <= precipitacao && cultura.getCulVlMmIdeal() + 20 >= precipitacao)) {
 	        			dadoPredicao.setPreTxObservacaoPrecipitacao("A precipitação está ideal para seu cultivo!");
+	        			dadoPredicao.setPrevlCorCard(2);
 	        		} else if(cultura != null && (cultura.getCulVlMmIdeal()) < precipitacao) {
-	        			dadoPredicao.setPreTxObservacaoPrecipitacao("Alerta de precipitação excessiva!");	        			
+	        			dadoPredicao.setPreTxObservacaoPrecipitacao("Alerta de precipitação excessiva!");	
+	        			dadoPredicao.setPrevlCorCard(1);
 	        		}else if (cultura != null && (cultura.getCulVlMmIdeal()) > precipitacao ){       			
 	        			dadoPredicao.setPreTxObservacaoPrecipitacao("Alerta de baixo nível de precipitação!");
+	        			dadoPredicao.setPrevlCorCard(0);
 	        		}
 	        		
 	        	break;
@@ -112,13 +115,13 @@ public class DBService {
         	  		
         	  		if (cultura != null && tempMedia <= cultura.getCulVlTempMinIdeal()) {
         	  			dadoPredicao.setPreTxObservacaoTempMedia("Alerta de temperatura abaixo do ideal!");
-        	  			dadoPredicao.setPrevlCorCard(0);
+        	  			
 	        		} else if (cultura != null && tempMedia >= cultura.getCulVlTempMaxIdeal()){
 	        			dadoPredicao.setPreTxObservacaoTempMedia("Alerta de temperatura acima do ideal!");
-	        			dadoPredicao.setPrevlCorCard(1);
+	        			
 	        		}else {
 	        			dadoPredicao.setPreTxObservacaoTempMedia("O período está ideal para a plantação");
-	        			dadoPredicao.setPrevlCorCard(2);
+	        			
 	        		}
      	  		
         	  	break;
