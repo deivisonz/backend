@@ -1,20 +1,15 @@
 @relation clima
 
 @attribute data date 'dd/MM/yyyy'
-
 @attribute direcao_vento integer
 @attribute velocidade_vento real
 @attribute velocidade_rajada real
-
 @attribute insolacao_total real
-
 @attribute dias_chuvosos integer
 @attribute precipitacao_total real
-
 @attribute temperatura_maxima real
 @attribute temperatura_media real
 @attribute temperatura_minima real
-
 @attribute umidade_media real
 
 @data
@@ -728,3 +723,6 @@
 01/12/2019,36,?,?,161.5,?,215.7,30.693548,26.520667,23.76129,78.193548
 01/01/2020,36,?,?,156.7,?,268.2,31.53871,27.071724,24.351613,78.395161
 01/02/2020,36,?,?,170.4,?,115.1,31.92069,27.466429,25.003448,78.896552
+01/03/2020,36,?,?,142.9,?,193,30.306895,26.2257,23.4516,80.4396
+01/04/2020,36,?,?,124.6,?,26.8,29,1392,25.14,22.88,75.59166
+01/05/2020,36,?,?,204.7,?,58.1,28.5,24.3523,20.41,76.25

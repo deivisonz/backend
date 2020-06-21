@@ -125,7 +125,8 @@ public class DBService {
 	        		}
      	  		
         	  	break;
-    	  		}
+    	  		
+        	  }
           }
                
           predicao.add(dadoPredicao);
