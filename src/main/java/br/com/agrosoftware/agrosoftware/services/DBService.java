@@ -51,11 +51,11 @@ public class DBService {
         usuarioDeivison.getUsuLsFuncoes().add(Funcao.ADMIN);
         usuarioVinicius.getUsuLsFuncoes().add(Funcao.USUARIO);
         
-        var propriedade1 = new Propriedade("Sítio Monte Belo", "Um sitio de merda", 1.5, Cultivo.MILHO, UF.ES, 122); 
-        var propriedade2 = new Propriedade("Sítio Boa Fé", "Um sitio de pouca merda", 3.2, Cultivo.CAFE, UF.ES, 50);
-        var propriedade3 = new Propriedade("Sítio Boa Viagem", "Um sitio de nenhuma merda", 5.0, Cultivo.CANA, UF.MG, 70);
+        var propriedade1 = new Propriedade("Sítio Monte Belo", "Um belo sitio em Monte Belo", 1.5, Cultivo.MILHO, UF.ES, 122); 
+        var propriedade2 = new Propriedade("Sítio Boa Fé", "Um recanto em Santa Leopoldina", 3.2, Cultivo.CAFE, UF.ES, 50);
+        var propriedade3 = new Propriedade("Sítio Boa Viagem", "Esse é o recanto boa Viagem", 5.0, Cultivo.CANA, UF.MG, 70);
         
-        propriedade1.setCulturas(Set.of(new Cultura("Café", 20, 22.0, 28.0, propriedade1)));
+        propriedade1.setCulturas(Set.of(new Cultura("Café", 120, 22.0, 28.0, propriedade1)));
         propriedadeRepository.saveAll(List.of(propriedade1, propriedade2, propriedade3));
         
         usuarioRepository.saveAll(List.of(usuarioDeivison, usuarioVinicius));  
