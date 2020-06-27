@@ -44,6 +44,14 @@ public class DBService {
     
     final static int PRECIPITACAO = 0;
     final static int TEMPERATURA_MEDIA = 1;
+    final static int TEMPERATURA_MIN = 2;
+    final static int TEMPERATURA_MAX = 3;
+    final static int INSOLACAO = 4;
+    
+    final static int AMARELO = 0;
+    final static int VERMELHO = 1;
+    final static int VERDE = 2;
+    
     
     public void instantiateDatabase() throws Exception {   
         var usuarioDeivison = new Usuario("Deivison", "deivison@erlacher.com", pe.encode("112233")); 
@@ -68,7 +76,7 @@ public class DBService {
       
       WekaForecaster forecaster = new WekaForecaster();
 
-      forecaster.setFieldsToForecast("precipitacao_total,temperatura_media,dias_chuvosos"); //Campos a serem previstos   
+      forecaster.setFieldsToForecast("precipitacao_total,temperatura_media,temperatura_minima,temperatura_maxima,insolacao_total"); //Campos a serem previstos   
       forecaster.setBaseForecaster(new LinearRegression()); //Define o tipo de algoritmo de predição a ser usado
 
       forecaster.getTSLagMaker().setTimeStampField("data"); // Nome do campo de data no arquivo csv
@@ -90,42 +98,40 @@ public class DBService {
       for (int mes = 0; mes < 12; mes++) {
           List<NumericPrediction> predsAtStep = forecast.get(mes);           
           var dadoPredicao = new Predicao(data.plusMonths(mes+1).format(DateTimeFormatter.ofPattern("MM/YYYY")));
-          for (int info = 0; info < 2; info ++) {   	  
+          for (int info = 0; info <= 4; info ++) {   	  
         	  NumericPrediction predForTarget = predsAtStep.get(info);
         	  switch(info) {
         	  	case PRECIPITACAO:
 	        		var precipitacao = BigDecimal.valueOf(predForTarget.predicted()).setScale(3, RoundingMode.FLOOR).doubleValue();
 	        		dadoPredicao.setPreVlPrecipitacao(precipitacao);
+	        		dadoPredicao.setPreTxObservacaoPrecipitacao("A previsão para o mês é de chuvas ");
 	        		
 	        		if (cultura != null && (cultura.getCulVlMmIdeal() - 20 <= precipitacao && cultura.getCulVlMmIdeal() + 20 >= precipitacao)) {
-	        			dadoPredicao.setPreTxObservacaoPrecipitacao("A precipitação está ideal para seu cultivo!");
-	        			dadoPredicao.setPrevlCorCard(2);
+	        			dadoPredicao.setPreTxObservacaoPrecipitacao(dadoPredicao.getPreTxObservacaoPrecipitacao() + " ideais para o cultivo");
+	        			dadoPredicao.setPrevlCorCard(VERDE);
 	        		} else if(cultura != null && (cultura.getCulVlMmIdeal()) < precipitacao) {
-	        			dadoPredicao.setPreTxObservacaoPrecipitacao("Alerta de precipitação excessiva!");	
-	        			dadoPredicao.setPrevlCorCard(1);
-	        		}else if (cultura != null && (cultura.getCulVlMmIdeal()) > precipitacao ){       			
-	        			dadoPredicao.setPreTxObservacaoPrecipitacao("Alerta de baixo nível de precipitação!");
-	        			dadoPredicao.setPrevlCorCard(0);
+	        			dadoPredicao.setPreTxObservacaoPrecipitacao(dadoPredicao.getPreTxObservacaoPrecipitacao() + " acima do esperado");
+	        			dadoPredicao.setPrevlCorCard(VERMELHO);
+	        		} else if (cultura != null && (cultura.getCulVlMmIdeal()) > precipitacao){       			
+	        			dadoPredicao.setPrevlCorCard(AMARELO);
+	        			dadoPredicao.setPreTxObservacaoPrecipitacao(dadoPredicao.getPreTxObservacaoPrecipitacao() + " abaixo do esperado");
 	        		}
 	        		
 	        	break;
         	  	case TEMPERATURA_MEDIA:
         	  		var tempMedia = BigDecimal.valueOf(predForTarget.predicted()).setScale(3, RoundingMode.FLOOR).doubleValue();
-        	  		dadoPredicao.setPreVlTemperaturaMedia(tempMedia);
-        	  		
-        	  		if (cultura != null && tempMedia <= cultura.getCulVlTempMinIdeal()) {
-        	  			dadoPredicao.setPreTxObservacaoTempMedia("Alerta de temperatura abaixo do ideal!");
-        	  			
-	        		} else if (cultura != null && tempMedia >= cultura.getCulVlTempMaxIdeal()){
-	        			dadoPredicao.setPreTxObservacaoTempMedia("Alerta de temperatura acima do ideal!");
-	        			
-	        		}else {
-	        			dadoPredicao.setPreTxObservacaoTempMedia("O período está ideal para a plantação");
-	        			
-	        		}
-     	  		
+        	  		dadoPredicao.setPreVlTemperaturaMedia(tempMedia);       	  		
+        	  	break;        	  	
+        		case TEMPERATURA_MIN:
+        			dadoPredicao.setPreTxObservacaoPrecipitacao(dadoPredicao.getPreTxObservacaoPrecipitacao() + ", com temp. mínima de " + BigDecimal.valueOf(predForTarget.predicted()).setScale(2, RoundingMode.FLOOR).doubleValue() + " ºC");
+            	break;
+        		case TEMPERATURA_MAX:
+        	  		dadoPredicao.setPreTxObservacaoPrecipitacao(dadoPredicao.getPreTxObservacaoPrecipitacao() + " e máxima de " + BigDecimal.valueOf(predForTarget.predicted()).setScale(2, RoundingMode.FLOOR).doubleValue() + " ºC.");
         	  	break;
-    	  		}
+        		case INSOLACAO:
+        			dadoPredicao.setPreTxObservacaoTempMedia("A insolação esperada é de " + BigDecimal.valueOf(predForTarget.predicted()).setScale(1, RoundingMode.FLOOR).doubleValue() + " Hrs/mês.");
+            	break;
+        	  }
           }
                
           predicao.add(dadoPredicao);
